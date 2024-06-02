@@ -1,5 +1,5 @@
 const express = require('express')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const cors = require('cors')
 const app = express()
@@ -16,7 +16,7 @@ app.use(express.json())
 
 // mongodb connection starts here
 const user = process.env.DB_USER
-const password = process.env.DB_PASSWORD 
+const password = process.env.DB_PASSWORD
 console.log(user, password)
 
 const uri = `mongodb+srv://${user}:${password}@cluster0.75ieoxq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -43,11 +43,43 @@ async function run() {
 
 
         // saving usersinfo in database
-        app.post('/users', async(req, res)=> {
+        app.post('/users', async (req, res) => {
             const userData = req.body;
             console.log(userData)
             const result = await usersCollection.insertOne(userData)
             res.send(result)
+        })
+
+        // getting all users
+        app.get('/users', async (req, res) => {
+            const result = await usersCollection.find().toArray()
+            res.send(result)
+        })
+
+        app.patch('/users/:id', async (req, res) => {
+            const id = req.params.id
+            const newRoleObject = req.body
+            const newRole = newRoleObject.role
+            console.log(newRole, newRoleObject)
+            const filter = { _id: new ObjectId(id) }
+            const updateDoc = {
+                $set: {
+                    role: newRole
+                }
+            }
+            const result = await usersCollection.updateOne(filter, updateDoc)
+            res.send(result)
+        })
+
+        // getting user role
+        app.get('/users/:email/role', async (req, res) => {
+            const email = req.params.email;
+            const query = { userEmail: email };
+            const options = {
+                projection: { role: 1 },
+            }
+            const role = await usersCollection.findOne(query, options)
+            res.send(role)
         })
 
 
