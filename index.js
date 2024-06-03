@@ -39,7 +39,7 @@ async function run() {
 
 
         const usersCollection = client.db('ClassMate').collection('users')
-
+        const sessionsCollection = client.db('ClassMate').collection('sessions')
 
 
         // saving usersinfo in database
@@ -80,6 +80,23 @@ async function run() {
             }
             const role = await usersCollection.findOne(query, options)
             res.send(role)
+        })
+
+
+        // sessions collection api's
+        app.post('/sessions', async (req, res) => {
+            const sessionData = req.body;
+            // console.log(sessionData)
+            const result = await sessionsCollection.insertOne(sessionData)
+            res.send(result)
+        })
+
+        app.get('/sessions/:email', async(req, res)=> {
+            const email = req.params.email
+            // console.log(email)
+            const query = {tutorEmail: email}
+            const result = await sessionsCollection.find(query).toArray()
+            res.send(result)
         })
 
 
