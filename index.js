@@ -45,7 +45,7 @@ async function run() {
         // saving usersinfo in database
         app.post('/users', async (req, res) => {
             const userData = req.body;
-            console.log(userData)
+            // console.log(userData)
             const result = await usersCollection.insertOne(userData)
             res.send(result)
         })
@@ -60,7 +60,7 @@ async function run() {
             const id = req.params.id
             const newRoleObject = req.body
             const newRole = newRoleObject.role
-            console.log(newRole, newRoleObject)
+            // console.log(newRole, newRoleObject)
             const filter = { _id: new ObjectId(id) }
             const updateDoc = {
                 $set: {
@@ -91,11 +91,75 @@ async function run() {
             res.send(result)
         })
 
-        app.get('/sessions/:email', async(req, res)=> {
-            const email = req.params.email
-            // console.log(email)
-            const query = {tutorEmail: email}
+        app.get('/sessions', async (req, res) => {
+            const result = await sessionsCollection.find().toArray()
+            res.send(result)
+        })
+
+        app.get('/sessions/approved', async (req, res) => {
+            const query = {status: "approved"}
             const result = await sessionsCollection.find(query).toArray()
+            res.send(result)
+        })
+
+        app.get('/sessions/:id', async (req, res) => {
+            const id = req.params.id
+            console.log('id query',id)
+            const query = {_id: new ObjectId(id)}
+            const result = await sessionsCollection.find(query).toArray()
+            res.send(result)
+        })
+
+        app.get('/sessions/emailQuery/:email', async (req, res) => {
+            const email = req.params.email
+            console.log('email query' ,email)
+            const query = { tutorEmail: email }
+            const result = await sessionsCollection.find(query).toArray()
+            res.send(result)
+        })
+
+       
+
+        app.patch('/sessions/:id', async (req, res) => {
+            const id = req.params.id
+            const info = req.body
+            const newStatus = info.newStatus
+            const newRegFee = info.amount || info.defaultAmount
+            console.log(newStatus, newRegFee)
+            const filter = { _id: new ObjectId(id) }
+            const updateDoc = {
+                $set: {
+                    status: newStatus,
+                    registrationFee: newRegFee,
+                }
+            }
+            console.log(updateDoc)
+            const result = await sessionsCollection.updateOne(filter, updateDoc)
+            res.send(result)
+        })
+
+
+        app.patch('/sessions/request/:id', async (req, res) => {
+            const id = req.params.id
+            const info = req.body
+            const newStatus = info.newStatus
+            console.log(info, newStatus)
+            const filter = { _id: new ObjectId(id) }
+            const updateDoc = {
+                $set: {
+                    status: newStatus,
+                }
+            }
+            const result = await sessionsCollection.updateOne(filter, updateDoc)
+            res.send(result)
+        })
+
+
+        app.delete('/sessions/:id', async(req, res) => {
+            const id = req.params.id
+            console.log('delete id', id)
+            const query = {_id: new ObjectId(id)}
+            const result = await sessionsCollection.deleteOne(query)
             res.send(result)
         })
 
