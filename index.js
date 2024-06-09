@@ -3,6 +3,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
 const cors = require('cors')
 const app = express()
+const stripe = require('stripe')(process.env.PAYMENT_SECRET_KEY)
 const port = process.env.PORT || 5000
 
 
@@ -40,6 +41,8 @@ async function run() {
 
         const usersCollection = client.db('ClassMate').collection('users')
         const sessionsCollection = client.db('ClassMate').collection('sessions')
+        const materialsCollection = client.db('ClassMate').collection('materials')
+        const bookedSessionCollection = client.db('ClassMate').collection('bookedSessions')
 
 
         // saving usersinfo in database
@@ -97,28 +100,28 @@ async function run() {
         })
 
         app.get('/sessions/approved', async (req, res) => {
-            const query = {status: "approved"}
+            const query = { status: "approved" }
             const result = await sessionsCollection.find(query).toArray()
             res.send(result)
         })
 
         app.get('/sessions/:id', async (req, res) => {
             const id = req.params.id
-            console.log('id query',id)
-            const query = {_id: new ObjectId(id)}
+            console.log('id query', id)
+            const query = { _id: new ObjectId(id) }
             const result = await sessionsCollection.find(query).toArray()
             res.send(result)
         })
 
         app.get('/sessions/emailQuery/:email', async (req, res) => {
             const email = req.params.email
-            console.log('email query' ,email)
+            console.log('email query', email)
             const query = { tutorEmail: email }
             const result = await sessionsCollection.find(query).toArray()
             res.send(result)
         })
 
-       
+
 
         app.patch('/sessions/:id', async (req, res) => {
             const id = req.params.id
@@ -155,15 +158,62 @@ async function run() {
         })
 
 
-        app.delete('/sessions/:id', async(req, res) => {
+        app.delete('/sessions/:id', async (req, res) => {
             const id = req.params.id
             console.log('delete id', id)
-            const query = {_id: new ObjectId(id)}
+            const query = { _id: new ObjectId(id) }
             const result = await sessionsCollection.deleteOne(query)
             res.send(result)
         })
 
 
+        // materials api
+        app.post('/materials', async (req, res) => {
+            const materialsData = req.body
+            console.log(materialsData)
+            const result = await materialsCollection.insertOne(materialsData)
+            res.send(result)
+        })
+
+        app.get('/materials/:email', async (req, res) => {
+            const email = req.params.email
+            console.log(email)
+            const query = { tutorEmail: email }
+            const result = await materialsCollection.find(query).toArray()
+            res.send(result)
+        })
+
+
+        // booked Session api's
+        app.post('/bookedSessions', async (req, res) => {
+            const bookedSessionData = req.body
+            // console.log(bookedSessionData)
+            const result = await bookedSessionCollection.insertOne(bookedSessionData)
+            res.send(result)
+        })
+
+
+        // stripe api
+        app.post("/create-payment-intent", async (req, res) => {
+            const sessionData = req.body;
+            // console.log(items)
+            const price = parseInt(sessionData.registrationFee) * 100
+
+            // Create a PaymentIntent with the order amount and currency
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: price,
+                currency: "usd",
+                // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+                automatic_payment_methods: {
+                    enabled: true,
+                },
+            });
+            // console.log(items)
+            res.send({
+                clientSecret: paymentIntent.client_secret,
+                // success: items
+            });
+        })
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
