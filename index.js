@@ -43,6 +43,8 @@ async function run() {
         const sessionsCollection = client.db('ClassMate').collection('sessions')
         const materialsCollection = client.db('ClassMate').collection('materials')
         const bookedSessionCollection = client.db('ClassMate').collection('bookedSessions')
+        const reviewsCollection = client.db('ClassMate').collection('reviews')
+        const notesCollection = client.db('ClassMate').collection('notes')
 
 
         // saving usersinfo in database
@@ -189,6 +191,41 @@ async function run() {
             const bookedSessionData = req.body
             // console.log(bookedSessionData)
             const result = await bookedSessionCollection.insertOne(bookedSessionData)
+            res.send(result)
+        })
+
+        app.get('/bookedSessions/:email', async (req, res) => {
+            const email = req.params.email
+            const query = { studentEmail: email }
+            const result = await bookedSessionCollection.find(query).toArray()
+            res.send(result)
+        })
+
+
+        app.get('/bookedSessions/status/:email', async (req, res) => {
+            const email = req.params.email
+            const query = { studentEmail: email }
+            const options = {
+                projection: { sessionId: 1 },
+            }
+            const result = await bookedSessionCollection.find(query, options).toArray()
+            res.send(result)
+        })
+
+
+        // reviews api
+        app.post('/reviews', async(req, res)=> {
+            const review = req.body
+            const result = await reviewsCollection.insertOne(review)
+            res.send(result)
+        })
+
+
+        // notes api
+        app.post('/notes', async (req, res) => {
+            const data = req.body
+            console.log(data)
+            const result = await notesCollection.insertOne(data)
             res.send(result)
         })
 
