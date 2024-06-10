@@ -11,6 +11,8 @@ const port = process.env.PORT || 5000
 app.use(cors({
     origin:[
         "http://localhost:5173",
+        "https://classmate-ac788.web.app",
+        "https://classmate-ac788.firebaseapp.com"
     ]
 }))
 app.use(express.json())
