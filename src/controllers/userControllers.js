@@ -1,3 +1,10 @@
+/*
+    1. contains all the logics (functions) related to user opeartions (we are not gonna call the functions inside this file)
+    
+    2. returns the logics so that it can be used on other files
+*/
+
+
 const { ObjectId } = require('mongodb');
 const {usersCollection} = require('../Config/database')
 

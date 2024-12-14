@@ -51,5 +51,5 @@ module.exports = {
     1. getting the  setup for mongodb
     2. creates a function to connect to database
     3. creates collections
-    4. exports connection function and collections to connect to the database
+    4. exports connection function and collections to connect to the database 
 */

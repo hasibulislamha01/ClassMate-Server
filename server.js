@@ -36,7 +36,7 @@ console.log(connectToDatabase);
 connectToDatabase().then(() => {
     // console.log('connection established with database');
     app.use('/users', usersRouter);
-    app.use('sessions', sessionsRouter);
+    app.use('/sessions', sessionsRouter);
     // app.use('/api/sessions', sessionsRouter);
 
     app.listen(port, () => console.log(`Server running on port`, port));
