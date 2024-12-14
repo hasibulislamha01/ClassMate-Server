@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongodb');
-const {usersCollection} = require('../Config/collections')
+const {usersCollection} = require('../Config/database')
 
 // async function saveUser(req, res) {
 //     const userData = req.body;
@@ -13,7 +13,7 @@ const {usersCollection} = require('../Config/collections')
 
 async function getAllUsers(req, res) {
     try {
-        const result = await usersCollection.find().toArray();
+        const result = await usersCollection?.find()?.toArray();
         res.send(result);
     } catch (error) {
         res.status(500).send({ message: "Failed to fetch users", error });

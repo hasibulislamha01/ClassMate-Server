@@ -8,4 +8,4 @@ const corsOptions = cors({
     ],
 });
 
-module.exports = corsOptions;
+module.exports = corsOptions; 

@@ -4,6 +4,7 @@ const dbName = 'ClassMate'
 const db = client?.db(dbName)
 
 const usersCollection = db?.collection('users')
+console.log('user collection', usersCollection);
 // const sessionsCollection = client.db(dbName).collection('sessions')
 // const materialsCollection = client.db(dbName).collection('materials')
 // const bookedSessionCollection = client.db(dbName).collection('bookedSessions')
