@@ -216,43 +216,43 @@ async function run() {
 
 
         // notes api
-        app.post('/notes', async (req, res) => {
-            const data = req.body
-            console.log(data)
-            const result = await notesCollection.insertOne(data)
-            res.send(result)
-        })
+        // app.post('/notes', async (req, res) => {
+        //     const data = req.body
+        //     console.log(data)
+        //     const result = await notesCollection.insertOne(data)
+        //     res.send(result)
+        // })
 
-        app.get('/notes/:email', async (req, res) => {
-            const email = req.params.email
-            const query = { studentEmail: email }
-            const result = await notesCollection.find(query).toArray()
-            res.send(result)
-        })
+        // app.get('/notes/:email', async (req, res) => {
+        //     const email = req.params.email
+        //     const query = { studentEmail: email }
+        //     const result = await notesCollection.find(query).toArray()
+        //     res.send(result)
+        // })
 
-        app.patch('/notes/:email', async (req, res) => {
-            const email = req.params.email
-            const query = { studentEmail: email }
-            const data = req.body
-            console.log(data)
+        // app.patch('/notes/:email', async (req, res) => {
+        //     const email = req.params.email
+        //     const query = { studentEmail: email }
+        //     const data = req.body
+        //     console.log(data)
 
-            const updateDoc = {
-                $set: {
-                    noteTitle: data?.title,
-                    noteDescription: data?.description
-                },
-            };
+        //     const updateDoc = {
+        //         $set: {
+        //             noteTitle: data?.title,
+        //             noteDescription: data?.description
+        //         },
+        //     };
 
-            const result = await notesCollection.updateOne(query, updateDoc)
-            res.send(result)
-        })
+        //     const result = await notesCollection.updateOne(query, updateDoc)
+        //     res.send(result)
+        // })
 
-        app.delete('/notes/:email', async(req, res)=> {
-            const email = req.params.email
-            const query = { studentEmail: email }
-            const result = await notesCollection.deleteOne(query)
-            res.send(result)
-        })
+        // app.delete('/notes/:email', async(req, res)=> {
+        //     const email = req.params.email
+        //     const query = { studentEmail: email }
+        //     const result = await notesCollection.deleteOne(query)
+        //     res.send(result)
+        // })
 
         // stripe api
         app.post("/create-payment-intent", async (req, res) => {

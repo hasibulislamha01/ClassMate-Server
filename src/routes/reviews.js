@@ -13,6 +13,15 @@ reviewRoutes.post('/', async (req, res) => {
     }
 })
 
+reviewRoutes.get('/', async (req, res) => {
+    try {
+        const result = await reviewsCollection.find().toArray()
+        res.send(result)
+    } catch (error) {
+        res.status(500).send({ message: "failed to fetch reviews", error })
+    }
+})
 
 
-module.exports = reviewsCollection
+
+module.exports = reviewRoutes

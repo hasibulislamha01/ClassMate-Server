@@ -14,6 +14,7 @@ const sessionsRouter = require('./src/routes/sessionRoutes');
 const materialRouter = require('./src/routes/materials');
 const bookedSessionRoutes = require('./src/routes/bookedSessions')
 const reviewRoutes = require('./src/routes/reviews')
+const noteRoutes = require("./src/routes/notes")
 // ... other routes
 
 const app = express();
@@ -44,6 +45,7 @@ connectToDatabase().then(() => {
     app.use('/materials', materialRouter);
     app.use('/bookedSessions', bookedSessionRoutes);
     app.use('/reviews', reviewRoutes);
+    app.use('/notes', noteRoutes)
     // app.use('/api/sessions', sessionsRouter);
 
     app.listen(port, () => console.log(`Server running on port`, port));
