@@ -255,26 +255,26 @@ async function run() {
         // })
 
         // stripe api
-        app.post("/create-payment-intent", async (req, res) => {
-            const sessionData = req.body;
-            // console.log(items)
-            const price = parseInt(sessionData.registrationFee) * 100
+        // app.post("/create-payment-intent", async (req, res) => {
+        //     const sessionData = req.body;
+        //     // console.log(items)
+        //     const price = parseInt(sessionData.registrationFee) * 100
 
-            // Create a PaymentIntent with the order amount and currency
-            const paymentIntent = await stripe.paymentIntents.create({
-                amount: price,
-                currency: "usd",
-                // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
-                automatic_payment_methods: {
-                    enabled: true,
-                },
-            });
-            // console.log(items)
-            res.send({
-                clientSecret: paymentIntent.client_secret,
-                // success: items
-            });
-        })
+        //     // Create a PaymentIntent with the order amount and currency
+        //     const paymentIntent = await stripe.paymentIntents.create({
+        //         amount: price,
+        //         currency: "usd",
+        //         // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+        //         automatic_payment_methods: {
+        //             enabled: true,
+        //         },
+        //     });
+        //     // console.log(items)
+        //     res.send({
+        //         clientSecret: paymentIntent.client_secret,
+        //         // success: items
+        //     });
+        // })
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
