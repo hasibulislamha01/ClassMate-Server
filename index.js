@@ -143,41 +143,41 @@ async function run() {
 
 
         // materials api
-        app.post('/materials', async (req, res) => {
-            const materialsData = req.body
-            console.log(materialsData)
-            const result = await materialsCollection.insertOne(materialsData)
-            res.send(result)
-        })
+        // app.post('/materials', async (req, res) => {
+        //     const materialsData = req.body
+        //     console.log(materialsData)
+        //     const result = await materialsCollection.insertOne(materialsData)
+        //     res.send(result)
+        // })
 
-        app.get('/materials', async(req, res)=> {
-            const result = await materialsCollection.find().toArray()
-            res.send(result)
-        })
+        // app.get('/materials', async(req, res)=> {
+        //     const result = await materialsCollection.find().toArray()
+        //     res.send(result)
+        // })
 
-        app.get('/materials/:email', async (req, res) => {
-            const email = req.params.email
-            console.log(email)
-            const query = { tutorEmail: email }
-            const result = await materialsCollection.find(query).toArray()
-            res.send(result)
-        })
+        // app.get('/materials/:email', async (req, res) => {
+        //     const email = req.params.email
+        //     console.log(email)
+        //     const query = { tutorEmail: email }
+        //     const result = await materialsCollection.find(query).toArray()
+        //     res.send(result)
+        // })
 
-        app.delete('/materials/:id', async(req, res)=> {
-            const id = req.params.id
-            // console.log(id)
-            const query = { _id: new ObjectId(id) }
-            const result = await materialsCollection.deleteOne(query)
-            res.send(result)
-        })
+        // app.delete('/materials/:id', async(req, res)=> {
+        //     const id = req.params.id
+        //     // console.log(id)
+        //     const query = { _id: new ObjectId(id) }
+        //     const result = await materialsCollection.deleteOne(query)
+        //     res.send(result)
+        // })
 
-        app.get('/materials/student/:id', async(req, res)=> {
-            const id = req.params.id
-            // console.log(id)
-            const query = { sessionId: id }
-            const result = await materialsCollection.find(query).toArray()
-            res.send(result)
-        })
+        // app.get('/materials/student/:id', async(req, res)=> {
+        //     const id = req.params.id
+        //     // console.log(id)
+        //     const query = { sessionId: id }
+        //     const result = await materialsCollection.find(query).toArray()
+        //     res.send(result)
+        // })
 
 
         // booked Session api's

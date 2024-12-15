@@ -11,7 +11,8 @@ const cors = require('cors');
 const errorHandler = require('./src/middlewares/errorHandler')
 const usersRouter = require('./src/routes/usersRoutes');  //importing user routes 
 const sessionsRouter = require('./src/routes/sessionRoutes');
-const materialRouter = require('./src/routes/materials')
+const materialRouter = require('./src/routes/materials');
+const bookedSessionRoutes = require('./src/routes/bookedSessions')
 // ... other routes
 
 const app = express();
@@ -40,6 +41,7 @@ connectToDatabase().then(() => {
     app.use('/users', usersRouter);
     app.use('/sessions', sessionsRouter);
     app.use('/materials', materialRouter);
+    app.use('/bookedSessions', bookedSessionRoutes);
     // app.use('/api/sessions', sessionsRouter);
 
     app.listen(port, () => console.log(`Server running on port`, port));
