@@ -22,6 +22,10 @@ const client = new MongoClient(uri, {
 //---------------- ( getting collections ... ) ---------------------
 const usersCollection = client.db('ClassMate').collection('users')
 const sessionsCollection = client.db('ClassMate').collection('sessions')
+const materialsCollection = client.db('ClassMate').collection('materials')
+const bookedSessionCollection = client.db('ClassMate').collection('bookedSessions')
+const reviewsCollection = client.db('ClassMate').collection('reviews')
+const notesCollection = client.db('ClassMate').collection('notes')
 // console.log('users collection in databse folder', usersCollection);
 
 
@@ -37,10 +41,14 @@ async function connectToDatabase() {
     return client;
 }
 
-module.exports = { 
-    connectToDatabase, 
+module.exports = {
+    connectToDatabase,
     usersCollection,
     sessionsCollection,
+    materialsCollection, 
+    bookedSessionCollection, 
+    reviewsCollection, 
+    notesCollection
 };
 // the function is exported and ready to import from anywhere inside the project
 // after we import the function we will call the function in the file where we imported

@@ -6,12 +6,12 @@ async function run() {
         // await client.db("admin").command({ ping: 1 });
 
 
-        const usersCollection = client.db('ClassMate').collection('users')
-        const sessionsCollection = client.db('ClassMate').collection('sessions')
-        const materialsCollection = client.db('ClassMate').collection('materials')
-        const bookedSessionCollection = client.db('ClassMate').collection('bookedSessions')
-        const reviewsCollection = client.db('ClassMate').collection('reviews')
-        const notesCollection = client.db('ClassMate').collection('notes')
+        // const usersCollection = client.db('ClassMate').collection('users')
+        // const sessionsCollection = client.db('ClassMate').collection('sessions')
+        // const materialsCollection = client.db('ClassMate').collection('materials')
+        // const bookedSessionCollection = client.db('ClassMate').collection('bookedSessions')
+        // const reviewsCollection = client.db('ClassMate').collection('reviews')
+        // const notesCollection = client.db('ClassMate').collection('notes')
 
 
         // saving usersinfo in database
@@ -181,30 +181,30 @@ async function run() {
 
 
         // booked Session api's
-        app.post('/bookedSessions', async (req, res) => {
-            const bookedSessionData = req.body
-            // console.log(bookedSessionData)
-            const result = await bookedSessionCollection.insertOne(bookedSessionData)
-            res.send(result)
-        })
+        // app.post('/bookedSessions', async (req, res) => {
+        //     const bookedSessionData = req.body
+        //     // console.log(bookedSessionData)
+        //     const result = await bookedSessionCollection.insertOne(bookedSessionData)
+        //     res.send(result)
+        // })
 
-        app.get('/bookedSessions/:email', async (req, res) => {
-            const email = req.params.email
-            const query = { studentEmail: email }
-            const result = await bookedSessionCollection.find(query).toArray()
-            res.send(result)
-        })
+        // app.get('/bookedSessions/:email', async (req, res) => {
+        //     const email = req.params.email
+        //     const query = { studentEmail: email }
+        //     const result = await bookedSessionCollection.find(query).toArray()
+        //     res.send(result)
+        // })
 
 
-        app.get('/bookedSessions/status/:email', async (req, res) => {
-            const email = req.params.email
-            const query = { studentEmail: email }
-            const options = {
-                projection: { sessionId: 1 },
-            }
-            const result = await bookedSessionCollection.find(query, options).toArray()
-            res.send(result)
-        })
+        // app.get('/bookedSessions/status/:email', async (req, res) => {
+        //     const email = req.params.email
+        //     const query = { studentEmail: email }
+        //     const options = {
+        //         projection: { sessionId: 1 },
+        //     }
+        //     const result = await bookedSessionCollection.find(query, options).toArray()
+        //     res.send(result)
+        // })
 
 
         // reviews api
