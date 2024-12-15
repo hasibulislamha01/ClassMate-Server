@@ -13,6 +13,7 @@ const usersRouter = require('./src/routes/usersRoutes');  //importing user route
 const sessionsRouter = require('./src/routes/sessionRoutes');
 const materialRouter = require('./src/routes/materials');
 const bookedSessionRoutes = require('./src/routes/bookedSessions')
+const reviewRoutes = require('./src/routes/reviews')
 // ... other routes
 
 const app = express();
@@ -42,6 +43,7 @@ connectToDatabase().then(() => {
     app.use('/sessions', sessionsRouter);
     app.use('/materials', materialRouter);
     app.use('/bookedSessions', bookedSessionRoutes);
+    app.use('/reviews', reviewRoutes);
     // app.use('/api/sessions', sessionsRouter);
 
     app.listen(port, () => console.log(`Server running on port`, port));

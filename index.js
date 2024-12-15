@@ -208,11 +208,11 @@ async function run() {
 
 
         // reviews api
-        app.post('/reviews', async (req, res) => {
-            const review = req.body
-            const result = await reviewsCollection.insertOne(review)
-            res.send(result)
-        })
+        // app.post('/reviews', async (req, res) => {
+        //     const review = req.body
+        //     const result = await reviewsCollection.insertOne(review)
+        //     res.send(result)
+        // })
 
 
         // notes api
