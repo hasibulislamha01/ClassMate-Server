@@ -8,17 +8,18 @@
 const { ObjectId } = require('mongodb');
 const {usersCollection} = require('../Config/database')
 
-// async function saveUser(req, res) {
-//     const userData = req.body;
-//     try {
-//         const result = await req.db.collection('users').insertOne(userData);
-//         res.send(result);
-//     } catch (error) {
-//         res.status(500).send({ message: "Failed to save user", error });
-//     }
-// }
+async function saveUser(req, res) {
+    const userData = req.body;
+    try {
+        console.log(userData);
+        // const result = await usersCollection.insertOne(userData);
+        res.send(userData);
+    } catch (error) {
+        res.status(500).send({ message: "Failed to save user", error });
+    }
+}
 
-async function getAllUsers(req, res) {
+async function getAllUsers(req , res) {
     try {
         const result = await usersCollection?.find()?.toArray();
         res.send(result);
@@ -27,4 +28,4 @@ async function getAllUsers(req, res) {
     }
 }
 
-module.exports = { getAllUsers };
+module.exports = { getAllUsers, saveUser };

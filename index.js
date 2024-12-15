@@ -16,49 +16,49 @@ async function run() {
 
         // saving usersinfo in database
         app.post('/users', async (req, res) => {
-            const userData = req.body;
-            // console.log(userData)
-            const result = await usersCollection.insertOne(userData)
-            res.send(result)
+            // const userData = req.body;
+            // // console.log(userData)
+            // const result = await usersCollection.insertOne(userData)
+            // res.send(result)
         })
 
         // getting all users
-        app.get('/users', async (req, res) => {
-            const result = await usersCollection.find().toArray()
-            res.send(result)
-        })
+        // app.get('/users', async (req, res) => {
+        //     const result = await usersCollection.find().toArray()
+        //     res.send(result)
+        // })
 
-        app.patch('/users/:id', async (req, res) => {
-            const id = req.params.id
-            const newRoleObject = req.body
-            const newRole = newRoleObject.role
-            // console.log(newRole, newRoleObject)
-            const filter = { _id: new ObjectId(id) }
-            const updateDoc = {
-                $set: {
-                    role: newRole
-                }
-            }
-            const result = await usersCollection.updateOne(filter, updateDoc)
-            res.send(result)
-        })
+        // app.patch('/users/:id', async (req, res) => {
+        //     const id = req.params.id
+        //     const newRoleObject = req.body
+        //     const newRole = newRoleObject.role
+        //     // console.log(newRole, newRoleObject)
+        //     const filter = { _id: new ObjectId(id) }
+        //     const updateDoc = {
+        //         $set: {
+        //             role: newRole
+        //         }
+        //     }
+        //     const result = await usersCollection.updateOne(filter, updateDoc)
+        //     res.send(result)
+        // })
 
         // getting user role
-        app.get('/users/:email/role', async (req, res) => {
-            const email = req.params.email;
-            const query = { userEmail: email };
-            const options = {
-                projection: { role: 1 },
-            }
-            const role = await usersCollection.findOne(query, options)
-            res.send(role)
-        })
+        // app.get('/users/:email/role', async (req, res) => {
+        //     const email = req.params.email;
+        //     const query = { userEmail: email };
+        //     const options = {
+        //         projection: { role: 1 },
+        //     }
+        //     const role = await usersCollection.findOne(query, options)
+        //     res.send(role)
+        // })
 
-        app.get('/users/role/tutors', async(req, res) => {
-            const query = {role: "Tutor"}
-            const result = await usersCollection.find(query).toArray()
-            res.send(result)
-        })
+        // app.get('/users/role/tutors', async(req, res) => {
+        //     const query = {role: "Tutor"}
+        //     const result = await usersCollection.find(query).toArray()
+        //     res.send(result)
+        // })
 
 
         // sessions collection api's
