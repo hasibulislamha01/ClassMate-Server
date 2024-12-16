@@ -7,9 +7,8 @@ const express = require('express');
 require('dotenv').config()
 const cors = require('cors')
 const { connectToDatabase } = require('./src/Config/database'); //importing connection function
-// const corsOptions = require('./src/middlewares/corsConfig');
-const cors = require('cors');
-const errorHandler = require('./src/middlewares/errorHandler')
+
+
 const usersRouter = require('./src/routes/usersRoutes');  //importing user routes 
 const sessionsRouter = require('./src/routes/sessionRoutes');
 const materialRouter = require('./src/routes/materials');
