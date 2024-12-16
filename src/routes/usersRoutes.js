@@ -89,11 +89,15 @@ userRouter.get('/:email/role', async (req, res) => {
     }
 })
 
-// 
-userRouter.get('/users/role/tutors', async(req, res) => {
-    const query = {role: "Tutor"}
-    const result = await usersCollection.find(query).toArray()
-    res.send(result)
+// getting all the tutors
+userRouter.get('/role/tutors', async (req, res) => {
+    try {
+        const query = { role: "Tutor" }
+        const result = await usersCollection.find(query).toArray()
+        res.send(result)
+    } catch (error) {
+        res.status(500).send({ message: "can not fetch tutors", error })
+    }
 })
 
 
