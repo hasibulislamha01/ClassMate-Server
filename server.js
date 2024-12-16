@@ -5,6 +5,7 @@
 
 const express = require('express');
 require('dotenv').config()
+const cors = require('cors')
 const { connectToDatabase } = require('./src/Config/database'); //importing connection function
 // const corsOptions = require('./src/middlewares/corsConfig');
 const cors = require('cors');
@@ -19,7 +20,13 @@ const stripeRoute = require('./src/routes/stripe')
 // ... other routes
 
 const app = express();
-app.use(cors())
+app.use(cors({
+    origin: [
+        "http://localhost:5173",
+        "https://classmate-ac788.web.app",
+        "https://classmate-ac788.firebaseapp.com",
+    ]
+}))
 const port = process.env.PORT || 5000
 // app.use(corsOptions)
 app.use(express.json());
@@ -50,7 +57,7 @@ connectToDatabase().then(() => {
     app.use('/reviews', reviewRoutes);
     app.use('/notes', noteRoutes)
     app.use('/create-payment-intent', stripeRoute)
-    
+
 
     app.listen(port, () => console.log(`Server running on port`, port));
 }).catch(err => {
