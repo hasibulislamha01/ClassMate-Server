@@ -71,8 +71,7 @@ app.get('/', (req, res) => {
 })
 
 
-// Centralized Error Handler (always placed after all routes)
-app.use(errorHandler);
+
 
 
 /**
