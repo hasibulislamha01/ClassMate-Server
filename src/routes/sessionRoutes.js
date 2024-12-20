@@ -44,7 +44,7 @@ sessionRouter.get('/:id', async (req, res) => {
         const id = req.params.id
         console.log('id query', id)
         const query = { _id: new ObjectId(id) }
-        const result = await sessionsCollection.find(query).toArray()
+        const result = await sessionsCollection.findOne(query)
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to get the session you requested", error })
