@@ -6,7 +6,8 @@
 
 const express = require('express')
 const sessionRouter = express.Router()
-const {sessionsCollection} = require('../Config/database')
+const { sessionsCollection } = require('../Config/database');
+const { ObjectId } = require('mongodb');
 
 
 // creating a new session
@@ -32,6 +33,7 @@ sessionRouter.get('/approved', async (req, res) => {
     try {
         const query = { status: "approved" }
         const result = await sessionsCollection.find(query).toArray()
+        console.log(result);
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to fetch approved sessions", error })
@@ -42,11 +44,9 @@ sessionRouter.get('/approved', async (req, res) => {
 sessionRouter.get('/:id', async (req, res) => {
     try {
         const id = req.params.id
-        console.log('id query', id)
         const query = { _id: new ObjectId(id) }
         const result = await sessionsCollection.findOne(query)
-        console.log(result)
-        res.send(result)
+        res.status(200).send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to get the session you requested", error })
     }

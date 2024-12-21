@@ -1,6 +1,6 @@
 
 // mongodb connection starts here
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()  //required to get .env variable's value
 const user = process.env.DB_USER
 const password = process.env.DB_PASSWORD
@@ -34,7 +34,8 @@ const notesCollection = client.db('ClassMate').collection('notes')
 async function connectToDatabase() {
     try {
         await client.connect()
-        console.log('connected to mongodb');
+        await client.db("admin").command({ ping: 1 });
+        console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } catch (error) {
         console.error("MongoDB Connection Error:", error);
     }
@@ -45,9 +46,9 @@ module.exports = {
     connectToDatabase,
     usersCollection,
     sessionsCollection,
-    materialsCollection, 
-    bookedSessionCollection, 
-    reviewsCollection, 
+    materialsCollection,
+    bookedSessionCollection,
+    reviewsCollection,
     notesCollection
 };
 // the function is exported and ready to import from anywhere inside the project
