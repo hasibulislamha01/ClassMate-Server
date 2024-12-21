@@ -48,8 +48,7 @@ app.use(express.json());
 
 // Connect to DB
 // console.log(connectToDatabase);
-const startConnection = async () => {
-    await connectToDatabase().then(() => {
+connectToDatabase().then(() => {
 
         // console.log('connection established with database');
 
@@ -70,10 +69,7 @@ const startConnection = async () => {
     app.get('/', (req, res) => {
         res.send('hello there, server here!')
     })
-}
 
-
-startConnection()
 
 
 
