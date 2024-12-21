@@ -55,10 +55,11 @@ module.exports = {
 // after we import the function we will call the function in the file where we imported
 // only then the connection with the database will be established
 
-/* 
- this file does the following job
+
+/**
+ * this file does the following job
     1. getting the  setup for mongodb
     2. creates a function to connect to database
     3. creates collections
     4. exports connection function and collections to connect to the database 
-*/
+ */

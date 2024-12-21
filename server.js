@@ -30,7 +30,9 @@ const port = process.env.PORT || 5000
 // app.use(corsOptions)
 app.use(express.json());
 
-/*  express(): This line creates an instance of the Express application. Express is a   Node.js framework that simplifies the process of building web applications and APIs.
+
+/**
+ * express(): This line creates an instance of the Express application. Express is a   Node.js framework that simplifies the process of building web applications and APIs.
 
     app: This variable holds a reference to the newly created Express application. It will be used to define routes, middleware, and other configurations for the server.
 
@@ -43,6 +45,7 @@ app.use(express.json());
     express.json(): This is a built-in middleware function that parses incoming JSON (JavaScript Object Notation) requests and populates the req.body property with the parsed JSON object. This is essential for handling API requests that send data in JSON format.
  */
 
+    
 // Connect to DB
 // console.log(connectToDatabase);
 connectToDatabase().then(() => {

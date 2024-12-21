@@ -1,8 +1,7 @@
-/*
-    1. imports necessary logics for users operation
-    2. operates http requests (get, post, patch, delete)
-    
-*/
+/**
+ *      1. imports necessary logics for users operation
+ *      2. operates http requests (get, post, patch, delete)
+ */
 
 const express = require('express');
 const userRouter = express.Router();
