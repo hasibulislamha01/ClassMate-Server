@@ -14,7 +14,7 @@ sessionRouter.post('/', async (req, res) => {
     try {
         const sessionData = req.body;
         // console.log(sessionData)
-        const result = await sessionsCollection.insertOne(sessionData)
+        const result = await sessionsCollection?.insertOne(sessionData)
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed create the session", error })
@@ -23,7 +23,7 @@ sessionRouter.post('/', async (req, res) => {
 
 // getting all sessions
 sessionRouter.get('/', async (req, res) => {
-    const result = await sessionsCollection.find().toArray()
+    const result = await sessionsCollection?.find().toArray()
     res.send(result)
 })
 
@@ -31,7 +31,7 @@ sessionRouter.get('/', async (req, res) => {
 sessionRouter.get('/approved', async (req, res) => {
     try {
         const query = { status: "approved" }
-        const result = await sessionsCollection.find(query).toArray()
+        const result = await sessionsCollection?.find(query).toArray()
         console.log(result);
         res.send(result)
     } catch (error) {
@@ -44,7 +44,7 @@ sessionRouter.get('/:id', async (req, res) => {
     try {
         const id = req.params.id
         const query = { _id: new ObjectId(id) }
-        const result = await sessionsCollection.findOne(query)
+        const result = await sessionsCollection?.findOne(query)
         res.status(200).send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to get the session you requested", error })
@@ -57,7 +57,7 @@ sessionRouter.get('/emailQuery/:email', async (req, res) => {
         const email = req.params.email
         // console.log('email query', email)
         const query = { tutorEmail: email }
-        const result = await sessionsCollection.find(query).toArray()
+        const result = await sessionsCollection?.find(query).toArray()
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to get your session", error })
@@ -81,7 +81,7 @@ sessionRouter.patch('/:id', async (req, res) => {
             }
         }
         console.log(updateDoc)
-        const result = await sessionsCollection.updateOne(filter, updateDoc)
+        const result = await sessionsCollection?.updateOne(filter, updateDoc)
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to update the session", error })
@@ -101,7 +101,7 @@ sessionRouter.patch('/request/:id', async (req, res) => {
                 status: newStatus,
             }
         }
-        const result = await sessionsCollection.updateOne(filter, updateDoc)
+        const result = await sessionsCollection?.updateOne(filter, updateDoc)
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to update session", error })
@@ -114,7 +114,7 @@ sessionRouter.delete('/:id', async (req, res) => {
         const id = req.params.id
         console.log('delete id', id)
         const query = { _id: new ObjectId(id) }
-        const result = await sessionsCollection.deleteOne(query)
+        const result = await sessionsCollection?.deleteOne(query)
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to delete the session", error })
