@@ -48,30 +48,35 @@ app.use(express.json());
 
 // Connect to DB
 // console.log(connectToDatabase);
-await connectToDatabase().then(() => {
+const startConnection = async () => {
+    await connectToDatabase().then(() => {
 
-    // console.log('connection established with database');
+        // console.log('connection established with database');
 
-    app.use('/users', usersRouter);
-    app.use('/sessions', sessionsRouter);
-    app.use('/materials', materialRouter);
-    app.use('/bookedSessions', bookedSessionRoutes);
-    app.use('/reviews', reviewRoutes);
-    app.use('/notes', noteRoutes)
-    app.use('/create-payment-intent', stripeRoute)
-
-
-    app.listen(port, () => console.log(`Server running on port`, port));
-}).catch(err => {
-    console.error('Failed to start server:', err);
-});
+        app.use('/users', usersRouter);
+        app.use('/sessions', sessionsRouter);
+        app.use('/materials', materialRouter);
+        app.use('/bookedSessions', bookedSessionRoutes);
+        app.use('/reviews', reviewRoutes);
+        app.use('/notes', noteRoutes)
+        app.use('/create-payment-intent', stripeRoute)
 
 
+        app.listen(port, () => console.log(`Server running on port`, port));
+    }).catch(err => {
+        console.error('Failed to start server:', err);
+    });
+
+    app.get('/', (req, res) => {
+        res.send('hello there, server here!')
+    })
+}
 
 
-app.get('/', (req, res) => {
-    res.send('hello there, server here!')
-})
+startConnection()
+
+
+
 
 
 
