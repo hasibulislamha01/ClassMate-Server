@@ -59,7 +59,7 @@ module.exports = {
 /**
  * this file does the following job
     1. getting the  setup for mongodb
-    2. creates a function to connect to database
+    2. creates a function to connect to database and exports it
     3. creates collections
-    4. exports connection function and collections to connect to the database 
+    4. exports collections to connect to the database 
  */

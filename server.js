@@ -45,10 +45,10 @@ app.use(express.json());
     express.json(): This is a built-in middleware function that parses incoming JSON (JavaScript Object Notation) requests and populates the req.body property with the parsed JSON object. This is essential for handling API requests that send data in JSON format.
  */
 
-    
+
 // Connect to DB
 // console.log(connectToDatabase);
-connectToDatabase().then(() => {
+await connectToDatabase().then(() => {
 
     // console.log('connection established with database');
 
