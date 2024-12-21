@@ -4,9 +4,9 @@
  */
 
 const express = require('express')
+const { ObjectId } = require('mongodb');
 const sessionRouter = express.Router()
 const { sessionsCollection } = require('../Config/database');
-const { ObjectId } = require('mongodb');
 
 
 // creating a new session
