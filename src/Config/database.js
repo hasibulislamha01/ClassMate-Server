@@ -2,8 +2,8 @@
 // mongodb connection starts here
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()  //required to get .env variable's value
-const user = hasibulStart
-const password = hasibulSuchi
+const user = "hasibulStart"
+const password = "hasibulSuchi"
 // console.log("user and password", user, password)
 
 // getting mongdb uri
