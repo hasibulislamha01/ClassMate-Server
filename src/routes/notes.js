@@ -3,7 +3,7 @@ const noteRoutes = express.Router()
 const { notesCollection } = require('../Config/database')
 
 // creating note
-noteRoutes.post('/notes', async (req, res) => {
+noteRoutes.post('/', async (req, res) => {
     try {
         const data = req.body
         console.log(data)
@@ -26,7 +26,7 @@ noteRoutes.get('/', async (req, res) => {
 })
 
 // getting notes of an specific student
-noteRoutes.get('/notes/:email', async (req, res) => {
+noteRoutes.get('/:email', async (req, res) => {
     try {
         const email = req.params.email
         const query = { studentEmail: email }
@@ -39,7 +39,7 @@ noteRoutes.get('/notes/:email', async (req, res) => {
 
 
 // updating notes of an specific student
-noteRoutes.patch('/notes/:email', async (req, res) => {
+noteRoutes.patch('/:email', async (req, res) => {
     try {
         const email = req.params.email
         const query = { studentEmail: email }
@@ -62,7 +62,7 @@ noteRoutes.patch('/notes/:email', async (req, res) => {
 
 
 // deleting a note 
-noteRoutes.delete('/notes/:email', async (req, res) => {
+noteRoutes.delete('/:email', async (req, res) => {
     try {
         const email = req.params.email
         const query = { studentEmail: email }
