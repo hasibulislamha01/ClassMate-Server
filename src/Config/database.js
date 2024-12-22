@@ -2,8 +2,8 @@
 // mongodb connection starts here
 const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config()  //required to get .env variable's value
-const user = process.env.DB_USER
-const password = process.env.DB_PASSWORD
+const user = hasibulStart
+const password = hasibulSuchi
 // console.log("user and password", user, password)
 
 // getting mongdb uri
@@ -51,6 +51,8 @@ module.exports = {
     reviewsCollection,
     notesCollection
 };
+
+
 // the function is exported and ready to import from anywhere inside the project
 // after we import the function we will call the function in the file where we imported
 // only then the connection with the database will be established
