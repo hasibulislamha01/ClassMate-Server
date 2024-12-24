@@ -13,11 +13,11 @@ This line creates a new router object, userRouter, using the express.Router() fu
 A router is a mini-application within Express that allows you to group related routes together and manage them separately.
 */
 
-userRouter.post('/test', async (req, res) => {
-    const userData = req.body;
+// finding any specific user
+userRouter.get('/:email', async (req, res) => {
+    const email = req.params.email
     try {
-        console.log("test api", userData);
-        const query = { userEmail: userData.email }
+        const query = { userEmail: email }
         const result = await usersCollection.findOne(query)
         res.send(result)
     } catch (error) {
@@ -36,7 +36,7 @@ userRouter.post('/', async (req, res) => {
         if (isUserOld) { res.send({ message: "Welcome Back" }) }
         else {
             const result = await usersCollection.insertOne(userData);
-            res.send(result);
+            res.send({result, message: "Welcome to ClassMate"});
         }
     } catch (error) {
         res.status(500).send({ message: "Failed to save user", error });
