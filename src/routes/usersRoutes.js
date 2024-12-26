@@ -43,6 +43,21 @@ userRouter.post('/', async (req, res) => {
     }
 });
 
+
+// Deleting a user
+userRouter.delete('/:email', async (req, res) => {
+    const email = req.params.email
+    try{
+        console.log("deleting user with email", email)
+        const query = {userEmail: email};
+        const  result = await usersCollection.deleteOne(query)
+        res.send(result)
+    } catch (error) {
+        res.status(500).send({message: "Failed to delete the user"})
+    }
+})
+
+
 userRouter.get('/', async (req, res, next) => {
     try {
         const result = await usersCollection.find().toArray()
