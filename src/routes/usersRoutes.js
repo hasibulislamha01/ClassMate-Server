@@ -44,6 +44,31 @@ userRouter.post('/', async (req, res) => {
 });
 
 
+// Updating user information
+userRouter.put('/:email', async (req, res) => {
+    const email = req.params.email
+  const { userEmail, role, gender, phone } = req.body; // Collect data from the form
+
+  if (!email) {
+    return res.status(400).json({ message: 'User email is required.' });
+  }
+
+  try {
+      const query = {userEmail: email}
+    const result = await usersCollection.updateOne(query,
+      { $set: { role, gender, phone } } );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating user', error });
+  }
+});
+
+
 // Deleting a user
 userRouter.delete('/:email', async (req, res) => {
     const email = req.params.email
