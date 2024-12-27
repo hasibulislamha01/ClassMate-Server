@@ -144,7 +144,8 @@ userRouter.get('/numbers', async (req, res) => {
     const userRole = req.query.role;
 
     // Construct the query
-    const query = { role: userRole };
+    const query = { };
+    if (userRole) query.role = userRole
 
     try {
         // Get the count of users with the specified role
