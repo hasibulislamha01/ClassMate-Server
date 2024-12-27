@@ -36,7 +36,7 @@ userRouter.post('/', async (req, res) => {
         if (isUserOld) { res.send({ message: "Welcome Back" }) }
         else {
             const result = await usersCollection.insertOne(userData);
-            res.send({result, message: "Welcome to ClassMate"});
+            res.send({ result, message: "Welcome to ClassMate" });
         }
     } catch (error) {
         res.status(500).send({ message: "Failed to save user", error });
@@ -47,45 +47,55 @@ userRouter.post('/', async (req, res) => {
 // Updating user information
 userRouter.put('/:email', async (req, res) => {
     const email = req.params.email
-  const { userEmail, role, gender, phone } = req.body; // Collect data from the form
+    const { userEmail, role, gender, phone } = req.body; // Collect data from the form
 
-  if (!email) {
-    return res.status(400).json({ message: 'User email is required.' });
-  }
-
-  try {
-      const query = {userEmail: email}
-    const result = await usersCollection.updateOne(query,
-      { $set: { role, gender, phone } } );
-
-    if (result.matchedCount === 0) {
-      return res.status(404).json({ message: 'User not found.' });
+    if (!email) {
+        return res.status(400).json({ message: 'User email is required.' });
     }
 
-    res.status(200).json({ message: 'User updated successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating user', error });
-  }
+    try {
+        const query = { userEmail: email }
+        const result = await usersCollection.updateOne(query,
+            { $set: { role, gender, phone } });
+
+        if (result.matchedCount === 0) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating user', error });
+    }
 });
 
 
 // Deleting a user
 userRouter.delete('/:email', async (req, res) => {
     const email = req.params.email
-    try{
+    try {
         console.log("deleting user with email", email)
-        const query = {userEmail: email};
-        const  result = await usersCollection.deleteOne(query)
+        const query = { userEmail: email };
+        const result = await usersCollection.deleteOne(query)
         res.send(result)
     } catch (error) {
-        res.status(500).send({message: "Failed to delete the user"})
+        res.status(500).send({ message: "Failed to delete the user" })
     }
 })
 
 
+// getting users data (both all and query)
 userRouter.get('/', async (req, res, next) => {
+    const role = req?.query.role
+    const gender = req.query.gender
+
+    let query = {}
+    if (role && gender) query = { role, gender }
+    else if (role) query = { role }
+    else if (gender) query = { gender }
+    console.log(query);
+
     try {
-        const result = await usersCollection.find().toArray()
+        const result = await usersCollection.find(query).toArray()
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "Failed to get user", error })
@@ -138,6 +148,8 @@ userRouter.get('/role/tutors', async (req, res) => {
         res.status(500).send({ message: "can not fetch tutors", error })
     }
 })
+
+
 
 
 
