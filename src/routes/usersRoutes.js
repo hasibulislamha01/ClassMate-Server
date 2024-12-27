@@ -140,8 +140,8 @@ userRouter.get('/:email/role', async (req, res) => {
 
 
 // Get the number of users with a specific role
-userRouter.get('/numbers/:role', async (req, res) => {
-    const userRole = req.params.role;
+userRouter.get('/numbers', async (req, res) => {
+    const userRole = req.query.role;
 
     // Construct the query
     const query = { role: userRole };
