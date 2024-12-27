@@ -138,6 +138,29 @@ userRouter.get('/:email/role', async (req, res) => {
     }
 })
 
+
+// Get the number of users with a specific role
+userRouter.get('/numbers/:role', async (req, res) => {
+    const userRole = req.params.role;
+
+    // Construct the query
+    const query = { role: userRole };
+
+    try {
+        // Get the count of users with the specified role
+        const userCount = await usersCollection.countDocuments(query);
+
+        res.status(200).json({ role: userRole, count: userCount });
+    } catch (error) {
+        console.error(`Error fetching user count for role ${userRole}:`, error);
+        res.status(500).json({ 
+            message: `Cannot fetch number of users with role ${userRole}`, 
+            error 
+        });
+    }
+});
+
+
 // getting all the tutors
 userRouter.get('/role/tutors', async (req, res) => {
     try {
