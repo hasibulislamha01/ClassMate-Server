@@ -13,9 +13,56 @@ This line creates a new router object, userRouter, using the express.Router() fu
 A router is a mini-application within Express that allows you to group related routes together and manage them separately.
 */
 
+
+// getting users data (both all and query)
+userRouter.get('/', async (req, res, next) => {
+    const role = req?.query.role
+    const gender = req.query.gender
+
+    let query = {}
+    if (role && gender) query = { role, gender }
+    else if (role) query = { role }
+    else if (gender) query = { gender }
+    console.log(query);
+
+    try {
+        const result = await usersCollection.find(query).toArray()
+        res.send(result)
+    } catch (error) {
+        res.status(500).send({ message: "Failed to get user", error })
+    }
+});
+
+
+
+// Get the number of users with a specific role
+userRouter.get('/counts', async (req, res) => {
+    console.log('Route hit');
+    const userRole = req.query.role;
+    console.log('Role:', userRole);
+  
+    const query = {};
+    if (userRole) query.role = userRole;
+    console.log('Query:', query);
+  
+    try {
+      const userCount = await usersCollection.countDocuments(query);
+      console.log('User count:', userCount);
+  
+      // Send the user count in the response body
+      res.status(200).json({ role: userRole, count: userCount });
+    } catch (error) {
+      console.error('Error:', error);
+      // Send a proper error response with a meaningful message
+      res.status(500).json({ message: 'An error occurred while fetching user count' });
+    }
+  })
+
+  
 // finding any specific user
 userRouter.get('/:email', async (req, res) => {
     const email = req.params.email
+    console.log('geiin', email);
     try {
         const query = { userEmail: email }
         const result = await usersCollection.findOne(query)
@@ -47,6 +94,7 @@ userRouter.post('/', async (req, res) => {
 // Updating user information
 userRouter.put('/:email', async (req, res) => {
     const email = req.params.email
+    console.log(email);
     const { userEmail, role, gender, phone } = req.body; // Collect data from the form
 
     if (!email) {
@@ -83,24 +131,6 @@ userRouter.delete('/:email', async (req, res) => {
 })
 
 
-// getting users data (both all and query)
-userRouter.get('/', async (req, res, next) => {
-    const role = req?.query.role
-    const gender = req.query.gender
-
-    let query = {}
-    if (role && gender) query = { role, gender }
-    else if (role) query = { role }
-    else if (gender) query = { gender }
-    console.log(query);
-
-    try {
-        const result = await usersCollection.find(query).toArray()
-        res.send(result)
-    } catch (error) {
-        res.status(500).send({ message: "Failed to get user", error })
-    }
-});
 
 // updating user role
 userRouter.patch('/:id', async (req, res) => {
@@ -139,27 +169,6 @@ userRouter.get('/:email/role', async (req, res) => {
 })
 
 
-// Get the number of users with a specific role
-userRouter.get('/numbers', async (req, res) => {
-    const userRole = req.query.role;
-
-    // Construct the query
-    const query = { };
-    if (userRole) query.role = userRole
-
-    try {
-        // Get the count of users with the specified role
-        const userCount = await usersCollection.countDocuments(query);
-
-        res.status(200).json({ role: userRole, count: userCount });
-    } catch (error) {
-        console.error(`Error fetching user count for role ${userRole}:`, error);
-        res.status(500).json({ 
-            message: `Cannot fetch number of users with role ${userRole}`, 
-            error 
-        });
-    }
-});
 
 
 // getting all the tutors
