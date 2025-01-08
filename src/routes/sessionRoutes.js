@@ -21,13 +21,16 @@ sessionRouter.post('/', async (req, res) => {
     }
 })
 
-// getting all sessions
+// getting sessions
 sessionRouter.get('/', async (req, res) => {
-    const result = await sessionsCollection?.find().toArray()
+    const { status } = req.query
+    const query = { status: status }
+    // console.log(status);
+    const result = await sessionsCollection?.find(query).toArray()
     res.send(result)
 })
 
-// getting approved session
+// getting approved session _________ (delete the route because we are handling this by query parameter from now on)
 sessionRouter.get('/approved', async (req, res) => {
     try {
         const query = { status: "approved" }
@@ -38,6 +41,9 @@ sessionRouter.get('/approved', async (req, res) => {
         res.status(500).send({ message: "failed to fetch approved sessions", error })
     }
 })
+
+// getting high rated session
+sessionRouter.get('/')
 
 // getting an specific session
 sessionRouter.get('/:id', async (req, res) => {
