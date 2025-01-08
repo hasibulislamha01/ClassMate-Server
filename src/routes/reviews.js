@@ -3,6 +3,7 @@ const reviewRoutes = express.Router()
 const { reviewsCollection } = require('../Config/database')
 
 
+// posting a review
 reviewRoutes.post('/', async (req, res) => {
     try {
         const review = req.body
@@ -13,6 +14,7 @@ reviewRoutes.post('/', async (req, res) => {
     }
 })
 
+// getting all reviews
 reviewRoutes.get('/', async (req, res) => {
     try {
         const result = await reviewsCollection.find().toArray()
@@ -22,6 +24,19 @@ reviewRoutes.get('/', async (req, res) => {
     }
 })
 
+
+// getting average rating for a session
+reviewRoutes.get('/:sessionId', async (req, res) => {
+    // const {} = req.query
+    const id = req.params.sessionId
+    const query = {sessionId: id}
+    try {
+        const result = await reviewsCollection.find(query).toArray()
+        res.send(result)
+    } catch (error) {
+        res.status(500).send({ message: "failed to fetch reviews", error })
+    }
+})
 
 
 module.exports = reviewRoutes
