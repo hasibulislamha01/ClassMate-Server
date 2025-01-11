@@ -37,7 +37,7 @@ userRouter.get('/', async (req, res, next) => {
 
 // Get the number of users with a specific role
 userRouter.get('/counts', async (req, res) => {
-    console.log('Route hit');
+    // console.log('Route hit');
     const userRole = req.query.role;
     console.log('Role:', userRole);
   

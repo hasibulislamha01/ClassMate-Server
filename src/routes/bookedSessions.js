@@ -16,21 +16,29 @@ bookedSessionRoutes.post('/', async (req, res) => {
 })
 
 
-// fetching booked sessions
+// fetching booked sessions (all, specific student)
 bookedSessionRoutes.get('/', async (req, res) => {
+    
+    const { studentEmail, tutorEmail } = req.query
+    let query = {};
+    if (studentEmail) query.studentEmail = { studentEmail }
+    if (tutorEmail) query.tutorEmail = { tutorEmail }
+    // console.log(query);
     try {
-        const result = await bookedSessionCollection.find().toArray()
-        res.send(result)
+        const bookedSessionCount = await bookedSessionCollection.countDocuments(query)
+        res.status(200).json({ query: studentEmail || tutorEmail, count: bookedSessionCount });
     } catch (error) {
         res.status(500).send({ message: "failed to fetch session data", error })
     }
 })
 
-// getting all the booked session for an specific student
-bookedSessionRoutes.get('/:email', async (req, res) => {
+// getting the count booked sessions by student or sold by tutor
+bookedSessionRoutes.get('/counts', async (req, res) => {
+    const { studentEmail, tutorEmail } = req.query
+    let query = {}
+    if (studentEmail) query = { studentEmail }
+    if (tutorEmail) query = { tutorEmail }
     try {
-        const email = req.params.email
-        const query = { studentEmail: email }
         const result = await bookedSessionCollection.find(query).toArray()
         res.send(result)
     } catch (error) {
