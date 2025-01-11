@@ -23,11 +23,18 @@ sessionRouter.post('/', async (req, res) => {
 
 // getting sessions
 sessionRouter.get('/', async (req, res) => {
-    const { status } = req.query
-    const query = { status: status }
-    // console.log(status);
-    const result = await sessionsCollection?.find(query).toArray()
-    res.send(result)
+    const { status, tutorEmail } = req.query
+    let query = {}
+    if (status) query.status = status
+    if(tutorEmail) query.tutorEmail = tutorEmail
+    console.log(query);
+    try {
+        const result = await sessionsCollection?.find(query).toArray()
+        res.send(result)
+    }
+    catch (error) {
+        res.status(500).send({ message: "failed to get the session you requested", error })
+    }
 })
 
 // getting approved session _________ (delete the route because we are handling this by query parameter from now on)
