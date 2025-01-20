@@ -52,9 +52,25 @@ sessionRouter.get('/approved', async (req, res) => {
 // getting high rated session
 sessionRouter.get('/')
 
+// getting counts value
+sessionRouter.get('/counts', async (req, res)=> {
+    const {tutorEmail} = req.query
+    let query = {}
+    if(tutorEmail){ query.tutorEmail= tutorEmail }
+    console.log(query);
+
+    try{
+        const result = await sessionsCollection.countDocuments(query)
+        res.status(200).json({query: tutorEmail, count: result})
+    }catch (error) {
+        res.status(500).send({ message: "failed to fetch the session counts for the query", error })
+    }
+})
+
+
 // getting an specific session
 sessionRouter.get('/:id', async (req, res) => {
-    try {
+        try {
         const id = req.params.id
         const query = { _id: new ObjectId(id) }
         const result = await sessionsCollection?.findOne(query)
@@ -133,6 +149,7 @@ sessionRouter.delete('/:id', async (req, res) => {
         res.status(500).send({ message: "failed to delete the session", error })
     }
 })
+
 
 
 
