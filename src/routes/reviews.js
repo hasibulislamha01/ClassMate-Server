@@ -17,7 +17,10 @@ reviewRoutes.post('/', async (req, res) => {
 // getting all reviews
 reviewRoutes.get('/', async (req, res) => {
     try {
-        const result = await reviewsCollection.find().toArray()
+        const {reviewerEmail} = req.query
+        let query = {}
+        if (reviewerEmail) query.userEmail = reviewerEmail
+        const result = await reviewsCollection.find(query).toArray()
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to fetch reviews", error })

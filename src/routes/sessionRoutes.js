@@ -67,6 +67,15 @@ sessionRouter.get('/counts', async (req, res)=> {
     }
 })
 
+// getting calender history:
+// sessionRouter.get('/history', async(req, res)=> {
+//     try{
+//         const {tutorEmail} = req.params
+//         let query = {}
+//         if (tutorEmail) query.tutorEmail = tutorEmail
+//         const tutorsSessions = await sessionsCollection.find(query).toArray()
+//     }
+// })
 
 // getting an specific session
 sessionRouter.get('/:id', async (req, res) => {
