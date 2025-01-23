@@ -1,7 +1,7 @@
 const express = require('express')
 const materialRouter = express.Router()
-const {materialsCollection} = require('../Config/database')
-
+const { materialsCollection } = require('../Config/database')
+const { ObjectId } = require('mongodb');
 
 
 
@@ -47,7 +47,7 @@ materialRouter.get('/:email', async (req, res) => {
 materialRouter.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id
-        // console.log(id)
+        console.log('deletable id: ', id)
         const query = { _id: new ObjectId(id) }
         const result = await materialsCollection.deleteOne(query)
         res.send(result)
