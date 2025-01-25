@@ -20,8 +20,11 @@ materialRouter.post('/', async (req, res) => {
 
 // getting all materials
 materialRouter.get('/', async (req, res) => {
+    const { sessionId } = req.query
+    let query = {}
+    if (sessionId) query.sessionId = sessionId
     try {
-        const result = await materialsCollection.find().toArray()
+        const result = await materialsCollection.find(query).toArray()
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to fetch materials data", error })
@@ -41,6 +44,21 @@ materialRouter.get('/counts', async (req, res) => {
         res.status(500).send({ message: 'internal server error (error while fetching materials count for the query)', error })
     }
 })
+
+// fetching materials that is purchased by student
+materialRouter.get('/student/:id', async (req, res) => {
+    try {
+        const id = req.params.id
+        // the id here is the session id of the material
+        // console.log(id)
+        const query = { sessionId: id }
+        const result = await materialsCollection.find(query).toArray()
+        res.send(result)
+    } catch (error) {
+        res.status(500).send({ message: "failed to fetch the material student requested", error })
+    }
+})
+
 
 // getting all the materials for a tutor
 materialRouter.get('/:email', async (req, res) => {
@@ -69,19 +87,6 @@ materialRouter.delete('/:id', async (req, res) => {
     }
 })
 
-// fetching materials that is purchased by student
-materialRouter.get('/student/:id', async (req, res) => {
-    try {
-        const id = req.params.id
-        // the id here is the session id of the material
-        // console.log(id)
-        const query = { sessionId: id }
-        const result = await materialsCollection.find(query).toArray()
-        res.send(result)
-    } catch (error) {
-        res.status(500).send({ message: "failed to fetch the material student requested", error })
-    }
-})
 
 
 
