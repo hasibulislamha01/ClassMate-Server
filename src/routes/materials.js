@@ -1,6 +1,7 @@
 const express = require('express')
 const materialRouter = express.Router()
 const { materialsCollection } = require('../Config/database')
+const { bookedSessionCollection } = require('../Config/database')
 const { ObjectId } = require('mongodb');
 
 
@@ -46,18 +47,30 @@ materialRouter.get('/counts', async (req, res) => {
 })
 
 // fetching materials that is purchased by student
-materialRouter.get('/student/:id', async (req, res) => {
+materialRouter.get('/student/:email', async (req, res) => {
     try {
-        const id = req.params.id
-        // the id here is the session id of the material
-        // console.log(id)
-        const query = { sessionId: id }
-        const result = await materialsCollection.find(query).toArray()
-        res.send(result)
+        const studentEmail = req.params.email;
+        const query = { studentEmail };
+        
+        // Fetch booked sessions
+        const bookedSessions = await bookedSessionCollection.find(query).toArray();
+        const sessionIds = bookedSessions.map(session => session.sessionId);
+        
+        if (sessionIds.length === 0) {
+            return res.send([]); // No sessions found, return empty array
+        }
+
+        // Fetch all materials in a single query
+        const materials = await materialsCollection.find({ sessionId: { $in: sessionIds } }).toArray();
+        
+        console.log('Found student materials:', materials);
+        res.send(materials);
     } catch (error) {
-        res.status(500).send({ message: "failed to fetch the material student requested", error })
+        console.error('Error fetching materials:', error);
+        res.status(500).send({ message: "Failed to fetch the materials the student requested", error });
     }
-})
+});
+
 
 
 // getting all the materials for a tutor
