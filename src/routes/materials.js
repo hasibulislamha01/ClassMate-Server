@@ -29,6 +29,19 @@ materialRouter.get('/', async (req, res) => {
 })
 
 
+// getting material counts
+materialRouter.get('/counts', async (req, res) => {
+    try {
+        const { sessionId } = req.query
+        let query = {}
+        if (sessionId) query.sessionId = sessionId
+        const result = await materialsCollection.countDocuments(query)
+        res.status(200).json({ count: result, query })
+    } catch (error) {
+        res.status(500).send({ message: 'internal server error (error while fetching materials count for the query)', error })
+    }
+})
+
 // getting all the materials for a tutor
 materialRouter.get('/:email', async (req, res) => {
     try {
