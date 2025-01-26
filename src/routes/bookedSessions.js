@@ -21,8 +21,8 @@ bookedSessionRoutes.get('/', async (req, res) => {
 
     const { studentEmail, tutorEmail } = req.query
     let query = {};
-    if (studentEmail) query.studentEmail = { studentEmail }
-    if (tutorEmail) query.tutorEmail = { tutorEmail }
+    if (studentEmail) query.studentEmail =  studentEmail 
+    if (tutorEmail) query.tutorEmail =  tutorEmail 
     console.log(query);
     try {
         const result = await bookedSessionCollection.find(query).toArray()
