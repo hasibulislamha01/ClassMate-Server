@@ -7,6 +7,7 @@ const { reviewsCollection } = require('../Config/database')
 reviewRoutes.post('/', async (req, res) => {
     try {
         const review = req.body
+        if(!review.reviewerEmail) throw new Error('reviewer email is required')
         const result = await reviewsCollection.insertOne(review)
         res.send(result)
     } catch (error) {
@@ -16,6 +17,19 @@ reviewRoutes.post('/', async (req, res) => {
 
 // getting all reviews
 reviewRoutes.get('/', async (req, res) => {
+    try {
+        const {reviewerEmail} = req.query
+        let query = {}
+        if (reviewerEmail) query.userEmail = reviewerEmail
+        const result = await reviewsCollection.find(query).toArray()
+        res.send(result)
+    } catch (error) {
+        res.status(500).send({ message: "failed to fetch reviews", error })
+    }
+})
+
+// getting review counts
+reviewRoutes.get('/counts', async (req, res) => {
     try {
         const {reviewerEmail} = req.query
         let query = {}
