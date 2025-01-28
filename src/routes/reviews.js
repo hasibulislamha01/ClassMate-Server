@@ -7,7 +7,7 @@ const { reviewsCollection } = require('../Config/database')
 reviewRoutes.post('/', async (req, res) => {
     try {
         const review = req.body
-        if(!review.reviewerEmail) throw new Error('reviewer email is required')
+        if (!review.reviewerEmail) throw new Error('reviewer email is required')
         const result = await reviewsCollection.insertOne(review)
         res.send(result)
     } catch (error) {
@@ -18,7 +18,7 @@ reviewRoutes.post('/', async (req, res) => {
 // getting all reviews
 reviewRoutes.get('/', async (req, res) => {
     try {
-        const {reviewerEmail} = req.query
+        const { reviewerEmail } = req.query
         let query = {}
         if (reviewerEmail) query.userEmail = reviewerEmail
         const result = await reviewsCollection.find(query).toArray()
@@ -31,7 +31,7 @@ reviewRoutes.get('/', async (req, res) => {
 // getting review counts
 reviewRoutes.get('/counts', async (req, res) => {
     try {
-        const {reviewerEmail} = req.query
+        const { reviewerEmail } = req.query
         let query = {}
         if (reviewerEmail) query.userEmail = reviewerEmail
         const result = await reviewsCollection.find(query).toArray()
@@ -43,17 +43,25 @@ reviewRoutes.get('/counts', async (req, res) => {
 
 
 // getting average rating for a session
-reviewRoutes.get('/:sessionId', async (req, res) => {
-    // const {} = req.query
-    const id = req.params.sessionId
-    const query = {sessionId: id}
+reviewRoutes.get('/average/:sessionId', async (req, res) => {
+    const id = req.params.sessionId;
+    const query = { sessionId: id };
+
     try {
-        const result = await reviewsCollection.find(query).toArray()
-        res.send(result)
+        const reviews = await reviewsCollection.find(query).toArray();
+        const reviewCounts = reviews.length;
+
+        const total = reviews.reduce((acc, review) => acc + review.ratingValue, 0);
+        const averageRating = reviewCounts > 0 ? total / reviewCounts : 0;
+
+        res.status(200).json({
+            rating: averageRating,
+            message: `Average rating found for the sessionId: ${id}`
+        });
     } catch (error) {
-        res.status(500).send({ message: "failed to fetch reviews", error })
+        res.status(500).send({ message: "failed to fetch reviews", error });
     }
-})
+});
 
 
 module.exports = reviewRoutes
