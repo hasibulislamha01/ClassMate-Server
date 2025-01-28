@@ -26,8 +26,10 @@ bookedSessionRoutes.get('/', async (req, res) => {
     console.log(query);
     try {
         const result = await bookedSessionCollection.find(query).toArray()
+        console.log(result);
         res.send(result)
     } catch (error) {
+        console.log(error);
         res.status(500).send({ message: "failed to fetch session data", error })
     }
 })
