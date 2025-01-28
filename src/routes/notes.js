@@ -28,6 +28,18 @@ noteRoutes.get('/', async (req, res) => {
     }
 })
 
+noteRoutes.get('/counts', async (req, res) => {
+    try {
+        const { studentEmail } = req.query
+        let query = {}
+        if (studentEmail) query.studentEmail = studentEmail
+        const data = await notesCollection.countDocuments(query)
+        res.status(200).json({data, query})
+    } catch (error) {
+        res.status(500).send({ message: "failed to fetch notes data", error })
+    }
+})
+
 // getting notes of an specific student
 // noteRoutes.get('/:email', async (req, res) => {
 //     try {
