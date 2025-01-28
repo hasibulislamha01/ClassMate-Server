@@ -15,10 +15,13 @@ noteRoutes.post('/', async (req, res) => {
 })
 
 
-// getting all notes
+// getting all notes (all, specific student)
 noteRoutes.get('/', async (req, res) => {
     try {
-        const result = await notesCollection.find().toArray()
+        const { studentEmail } = req.query
+        let query = {}
+        if (studentEmail) query.studentEmail = studentEmail
+        const result = await notesCollection.find(query).toArray()
         res.send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to fetch notes data", error })
@@ -26,16 +29,16 @@ noteRoutes.get('/', async (req, res) => {
 })
 
 // getting notes of an specific student
-noteRoutes.get('/:email', async (req, res) => {
-    try {
-        const email = req.params.email
-        const query = { studentEmail: email }
-        const result = await notesCollection.find(query).toArray()
-        res.send(result)
-    } catch (error) {
-        res.status(500).send({ message: "failed to fetch student's note", error })
-    }
-})
+// noteRoutes.get('/:email', async (req, res) => {
+//     try {
+//         const email = req.params.email
+//         const query = { studentEmail: email }
+//         const result = await notesCollection.find(query).toArray()
+//         res.send(result)
+//     } catch (error) {
+//         res.status(500).send({ message: "failed to fetch student's note", error })
+//     }
+// })
 
 
 // updating notes of an specific student
