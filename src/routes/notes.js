@@ -33,8 +33,8 @@ noteRoutes.get('/counts', async (req, res) => {
         const { studentEmail } = req.query
         let query = {}
         if (studentEmail) query.studentEmail = studentEmail
-        const data = await notesCollection.countDocuments(query)
-        res.status(200).json({data, query})
+        const count = await notesCollection.countDocuments(query)
+        res.status(200).json({count, query})
     } catch (error) {
         res.status(500).send({ message: "failed to fetch notes data", error })
     }
