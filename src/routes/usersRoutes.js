@@ -39,15 +39,15 @@ userRouter.get('/', async (req, res, next) => {
 userRouter.get('/counts', async (req, res) => {
     // console.log('Route hit');
     const userRole = req.query.role;
-    console.log('Role:', userRole);
+    // console.log('Role:', userRole);
   
     const query = {};
     if (userRole) query.role = userRole;
-    console.log('Query:', query);
+    // console.log('Query:', query);
   
     try {
       const userCount = await usersCollection.countDocuments(query);
-      console.log('User count:', userCount);
+    //   console.log('User count:', userCount);
   
       // Send the user count in the response body
       res.status(200).json({ role: userRole, count: userCount });
@@ -62,7 +62,7 @@ userRouter.get('/counts', async (req, res) => {
 // finding any specific user
 userRouter.get('/:email', async (req, res) => {
     const email = req.params.email
-    console.log('geiin', email);
+    // console.log('geiin', email);
     try {
         const query = { userEmail: email }
         const result = await usersCollection.findOne(query)
@@ -94,7 +94,7 @@ userRouter.post('/', async (req, res) => {
 // Updating user information
 userRouter.put('/:email', async (req, res) => {
     const email = req.params.email
-    console.log(email);
+    // console.log(email);
     const { userEmail, role, gender, phone } = req.body; // Collect data from the form
 
     if (!email) {

@@ -21,13 +21,13 @@ sessionRouter.post('/', async (req, res) => {
     }
 })
 
-// getting sessions
+// getting sessions (for all users, student, tutors)
 sessionRouter.get('/', async (req, res) => {
     const { status, tutorEmail } = req.query
     let query = {}
     if (status) query.status = status
-    if(tutorEmail) query.tutorEmail = tutorEmail
-    console.log(query);
+    if (tutorEmail) query.tutorEmail = tutorEmail
+    // console.log(query);
     try {
         const result = await sessionsCollection?.find(query).toArray()
         res.send(result)
@@ -53,16 +53,16 @@ sessionRouter.get('/approved', async (req, res) => {
 sessionRouter.get('/')
 
 // getting counts value
-sessionRouter.get('/counts', async (req, res)=> {
-    const {tutorEmail} = req.query
+sessionRouter.get('/counts', async (req, res) => {
+    const { tutorEmail } = req.query
     let query = {}
-    if(tutorEmail){ query.tutorEmail= tutorEmail }
+    if (tutorEmail) { query.tutorEmail = tutorEmail }
     console.log(query);
 
-    try{
+    try {
         const result = await sessionsCollection.countDocuments(query)
-        res.status(200).json({query: tutorEmail, count: result})
-    }catch (error) {
+        res.status(200).json({ query: tutorEmail, count: result })
+    } catch (error) {
         res.status(500).send({ message: "failed to fetch the session counts for the query", error })
     }
 })
@@ -79,7 +79,7 @@ sessionRouter.get('/counts', async (req, res)=> {
 
 // getting an specific session
 sessionRouter.get('/:id', async (req, res) => {
-        try {
+    try {
         const id = req.params.id
         const query = { _id: new ObjectId(id) }
         const result = await sessionsCollection?.findOne(query)
@@ -89,42 +89,52 @@ sessionRouter.get('/:id', async (req, res) => {
     }
 })
 
-// getting session of an specific tutor
-sessionRouter.get('/emailQuery/:email', async (req, res) => {
-    try {
-        const email = req.params.email
-        // console.log('email query', email)
-        const query = { tutorEmail: email }
-        const result = await sessionsCollection?.find(query).toArray()
-        res.send(result)
-    } catch (error) {
-        res.status(500).send({ message: "failed to get your session", error })
-    }
-})
-
 
 // updating session (updating session price)
+// const { ObjectId } = require("mongodb");
+
 sessionRouter.patch('/:id', async (req, res) => {
     try {
-        const id = req.params.id
-        const info = req.body
-        const newStatus = info.newStatus
-        const newRegFee = info.amount || info.defaultAmount
-        console.log(newStatus, newRegFee)
-        const filter = { _id: new ObjectId(id) }
-        const updateDoc = {
-            $set: {
-                status: newStatus,
-                registrationFee: newRegFee,
-            }
+        const id = req.params.id;
+        const updates = req.body;
+
+        console.log('Received ID:', id);
+        console.log('Received Updates:', updates);
+
+        if (!ObjectId.isValid(id)) {
+            return res.status(400).json({ error: "Invalid ID format" });
         }
-        console.log(updateDoc)
-        const result = await sessionsCollection?.updateOne(filter, updateDoc)
-        res.send(result)
+
+        const filter = { _id: new ObjectId(id) };
+
+        if (!Array.isArray(updates) || updates.length === 0) {
+            return res.status(400).json({ error: "Invalid updates format" });
+        }
+
+        const updateDoc = {};
+        updates.forEach(({ updatableKey, value }) => {
+            updateDoc[updatableKey] = value;
+        });
+
+        console.log('Final Update Document:', updateDoc);
+
+        const options = { upsert: false };
+        const result = await sessionsCollection.updateOne(filter, { $set: updateDoc }, options);
+
+        if (result.modifiedCount > 0) {
+            res.json({ message: "Document updated successfully", result });
+        } else if (result.matchedCount > 0) {
+            res.json({ message: "Document already up to date", result });
+        } else {
+            res.status(404).json({ message: "Document not found" });
+        }
     } catch (error) {
-        res.status(500).send({ message: "failed to update the session", error })
+        console.error('Error in PATCH /sessions/:id:', error);
+        res.status(500).json({ error: error.message });
     }
-})
+});
+
+
 
 // updating session
 sessionRouter.patch('/request/:id', async (req, res) => {
@@ -132,7 +142,7 @@ sessionRouter.patch('/request/:id', async (req, res) => {
         const id = req.params.id
         const info = req.body
         const newStatus = info.newStatus
-        console.log(info, newStatus)
+        console.log('info and new status are ', info, newStatus)
         const filter = { _id: new ObjectId(id) }
         const updateDoc = {
             $set: {
