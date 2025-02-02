@@ -18,9 +18,10 @@ reviewRoutes.post('/', async (req, res) => {
 // getting all reviews
 reviewRoutes.get('/', async (req, res) => {
     try {
-        const { reviewerEmail } = req.query
+        const { reviewerEmail,sessionId } = req.query
         let query = {}
         if (reviewerEmail) query.userEmail = reviewerEmail
+        if (sessionId) query.sessionId = sessionId
         const result = await reviewsCollection.find(query).toArray()
         res.send(result)
     } catch (error) {
