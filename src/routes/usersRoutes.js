@@ -40,25 +40,25 @@ userRouter.get('/counts', async (req, res) => {
     // console.log('Route hit');
     const userRole = req.query.role;
     // console.log('Role:', userRole);
-  
+
     const query = {};
     if (userRole) query.role = userRole;
     // console.log('Query:', query);
-  
-    try {
-      const userCount = await usersCollection.countDocuments(query);
-    //   console.log('User count:', userCount);
-  
-      // Send the user count in the response body
-      res.status(200).json({ role: userRole, count: userCount });
-    } catch (error) {
-      console.error('Error:', error);
-      // Send a proper error response with a meaningful message
-      res.status(500).json({ message: 'An error occurred while fetching user count' });
-    }
-  })
 
-  
+    try {
+        const userCount = await usersCollection.countDocuments(query);
+        //   console.log('User count:', userCount);
+
+        // Send the user count in the response body
+        res.status(200).json({ role: userRole, count: userCount });
+    } catch (error) {
+        console.error('Error:', error);
+        // Send a proper error response with a meaningful message
+        res.status(500).json({ message: 'An error occurred while fetching user count' });
+    }
+})
+
+
 // finding any specific user
 userRouter.get('/:email', async (req, res) => {
     const email = req.params.email
@@ -119,12 +119,12 @@ userRouter.put('/:email', async (req, res) => {
 
 // Deleting a user
 userRouter.delete('/:email', async (req, res) => {
-    const email = req.params.email
+    const email = req?.params?.email
     try {
         console.log("deleting user with email", email)
         const query = { userEmail: email };
         const result = await usersCollection.deleteOne(query)
-        res.send(result)
+        res.send({ result, message: 'User deleted successfully' })
     } catch (error) {
         res.status(500).send({ message: "Failed to delete the user" })
     }

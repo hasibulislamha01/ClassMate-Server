@@ -94,6 +94,10 @@ sessionRouter.get('/:id', async (req, res) => {
 // const { ObjectId } = require("mongodb");
 
 sessionRouter.patch('/:id', async (req, res) => {
+
+    // ----------- DANGER:
+    // The body must be an array of objects with the following formats: { "updatableKey": "status", "value": 'approved' },
+    
     try {
         const id = req.params.id;
         const updates = req.body;
