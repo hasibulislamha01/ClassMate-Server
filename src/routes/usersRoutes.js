@@ -124,7 +124,7 @@ userRouter.delete('/:email', async (req, res) => {
         console.log("deleting user with email", email)
         const query = { userEmail: email };
         const result = await usersCollection.deleteOne(query)
-        res.send({ result, message: 'User deleted successfully' })
+        res.status(200).send({ result, message: 'User deleted successfully' })
     } catch (error) {
         res.status(500).send({ message: "Failed to delete the user" })
     }
