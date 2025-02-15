@@ -62,7 +62,7 @@ userRouter.get('/counts', async (req, res) => {
 // finding any specific user
 userRouter.get('/:email', async (req, res) => {
     const email = req.params.email
-    // console.log('geiin', email);
+    console.log('geiin', email);
     try {
         const query = { userEmail: email }
         const result = await usersCollection.findOne(query)
