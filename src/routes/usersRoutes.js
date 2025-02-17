@@ -95,7 +95,7 @@ userRouter.post('/', async (req, res) => {
 userRouter.put('/:email', async (req, res) => {
     const email = req.params.email
     // console.log(email);
-    const { userEmail, role, gender, phone } = req.body; // Collect data from the form
+    const { userEmail, role, gender, phone } = req.body;
 
     if (!email) {
         return res.status(400).json({ message: 'User email is required.' });

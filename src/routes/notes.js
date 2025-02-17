@@ -5,8 +5,12 @@ const { notesCollection } = require('../Config/database')
 // creating note
 noteRoutes.post('/', async (req, res) => {
     try {
+        let query = {}
         const data = req.body
+        const {sessionId} = req.query
         console.log(data)
+        if(sessionId) query.sessionId = sessionId
+
         const result = await notesCollection.insertOne(data)
         res.send(result)
     } catch (error) {
@@ -30,9 +34,10 @@ noteRoutes.get('/', async (req, res) => {
 
 noteRoutes.get('/counts', async (req, res) => {
     try {
-        const { studentEmail } = req.query
+        const { studentEmail, bookedSessionId } = req.query
         let query = {}
         if (studentEmail) query.studentEmail = studentEmail
+        if (bookedSessionId) query.bookedSessionId = bookedSessionId
         const count = await notesCollection.countDocuments(query)
         res.status(200).json({count, query})
     } catch (error) {
