@@ -21,9 +21,10 @@ materialRouter.post('/', async (req, res) => {
 
 // getting all materials
 materialRouter.get('/', async (req, res) => {
-    const { sessionId } = req.query
+    const { sessionId, tutorEmail } = req.query
     let query = {}
     if (sessionId) query.sessionId = sessionId
+    if (tutorEmail) query.tutorEmail = tutorEmail
     try {
         const result = await materialsCollection.find(query).toArray()
         res.send(result)
