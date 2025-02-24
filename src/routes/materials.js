@@ -37,9 +37,10 @@ materialRouter.get('/', async (req, res) => {
 // getting material counts
 materialRouter.get('/counts', async (req, res) => {
     try {
-        const { sessionId } = req.query
+        const { sessionId, tutorEmail } = req.query
         let query = {}
         if (sessionId) query.sessionId = sessionId
+        if (tutorEmail) query.tutorEmail = tutorEmail
         const result = await materialsCollection.countDocuments(query)
         res.status(200).json({ count: result, query })
     } catch (error) {
