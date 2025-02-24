@@ -9,7 +9,7 @@ bookedSessionRoutes.post('/', async (req, res) => {
         const bookedSessionData = req.body
         // console.log(bookedSessionData)
         const result = await bookedSessionCollection.insertOne(bookedSessionData)
-        res.send(result)
+        res.status(200).send(result)
     } catch (error) {
         res.status(500).send({ message: "failed to book session", error })
     }
@@ -19,15 +19,16 @@ bookedSessionRoutes.post('/', async (req, res) => {
 // fetching booked sessions (all, specific student, specific tutor)
 bookedSessionRoutes.get('/', async (req, res) => {
 
-    const { studentEmail, tutorEmail } = req.query
+    const { sessionId, studentEmail, tutorEmail } = req.query
     let query = {};
     if (studentEmail) query.studentEmail =  studentEmail 
     if (tutorEmail) query.tutorEmail =  tutorEmail 
+    if (sessionId) query.sessionId =  sessionId 
     // console.log(query);
     try {
         const result = await bookedSessionCollection.find(query).toArray()
         // console.log(result);
-        res.send(result)
+        res.status(200).send(result)
     } catch (error) {
         console.log(error);
         res.status(500).send({ message: "failed to fetch session data", error })
