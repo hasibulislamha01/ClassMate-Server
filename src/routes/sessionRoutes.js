@@ -38,9 +38,9 @@ sessionRouter.get('/', async (req, res) => {
 })
 
 // getting approved session _________ (delete the route because we are handling this by query parameter from now on)
-sessionRouter.get('/approved', async (req, res) => {
+sessionRouter.get('/bookable', async (req, res) => {
     try {
-        const query = { status: "approved" }
+        const query = { status: "approved" || 'renewed' }
         const result = await sessionsCollection?.find(query).toArray()
         console.log(result);
         res.send(result)
