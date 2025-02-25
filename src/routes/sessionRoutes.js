@@ -40,8 +40,11 @@ sessionRouter.get('/', async (req, res) => {
 // getting approved session _________ (delete the route because we are handling this by query parameter from now on)
 sessionRouter.get('/bookable', async (req, res) => {
     try {
-        const query = { status: "approved" || 'renewed' }
-        const result = await sessionsCollection?.find(query).toArray()
+        const query1 = { status: "approved" || 'renewed' }
+        const query2 = { status:  'renewed' }
+        const result1 = await sessionsCollection?.find(query1).toArray()
+        const result2 = await sessionsCollection?.find(query2).toArray()
+        const result = [...result1, ...result2]
         console.log(result);
         res.send(result)
     } catch (error) {
